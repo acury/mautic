@@ -3,7 +3,7 @@
         <table class="table table-hover table-striped table-bordered point-list" id="pointTable">
             <thead>
             <tr>
-                {{ include('MauticCoreBundle:Helper:tableheader.html.twig', {
+                {{ include('@MauticCore/Helper/tableheader.html.twig', {
                         'checkall': 'true',
                         'target': '#pointTable',
                         'routeBase': 'point',
@@ -12,7 +12,7 @@
                         },
                 }) }}
 
-                {{ include('MauticCoreBundle:Helper:tableheader.html.twig', {
+                {{ include('@MauticCore/Helper/tableheader.html.twig', {
                         'sessionVar': 'point',
                         'orderBy': 'p.name',
                         'text': 'mautic.core.name',
@@ -20,14 +20,21 @@
                         'default': true,
                 }) }}
 
-                {{ include('MauticCoreBundle:Helper:tableheader.html.twig', {
+                {{ include('@MauticCore/Helper/tableheader.html.twig', {
                         'sessionVar': 'point',
                         'orderBy': 'cat.title',
                         'text': 'mautic.core.category',
                         'class': 'visible-md visible-lg col-point-category',
                 }) }}
 
-                {{ include('MauticCoreBundle:Helper:tableheader.html.twig', {
+                {{ include('@MauticCore/Helper/tableheader.html.twig', {
+                        'sessionVar': 'point',
+                        'orderBy': 'pl.name',
+                        'text': 'mautic.point.thead.group',
+                        'class': 'visible-md visible-lg col-point-group',
+                }) }}
+
+                {{ include('@MauticCore/Helper/tableheader.html.twig', {
                         'sessionVar': 'point',
                         'orderBy': 'p.delta',
                         'text': 'mautic.point.thead.delta',
@@ -36,7 +43,7 @@
 
                 <th class="col-point-action">{{ 'mautic.point.thead.action'|trans }}</th>
 
-                {{ include('MauticCoreBundle:Helper:tableheader.html.twig', {
+                {{ include('@MauticCore/Helper/tableheader.html.twig', {
                         'sessionVar': 'point',
                         'orderBy': 'p.id',
                         'text': 'mautic.core.id',
@@ -48,7 +55,7 @@
             {% for item in items %}
                 <tr>
                     <td>
-                        {{ include('MauticCoreBundle:Helper:list_actions.html.twig', {
+                        {{ include('@MauticCore/Helper/list_actions.html.twig', {
                                 'item': item,
                                 'templateButtons': {
                                     'edit': permissions['point:points:edit'],
@@ -60,7 +67,7 @@
                     </td>
                     <td>
                         <div>
-                            {{ include('MauticCoreBundle:Helper:publishstatus_icon.html.twig', {'item': item, 'model': 'point'}) }}
+                            {{ include('@MauticCore/Helper/publishstatus_icon.html.twig', {'item': item, 'model': 'point'}) }}
                             {% if permissions['point:points:edit'] %}
                                 <a href="{{ path('mautic_point_action', {'objectAction': 'edit', 'objectId': item.id}) }}" data-toggle="ajax">
                                     {{ item.name }}
@@ -84,6 +91,11 @@
                           <span>{{ catName }}</span>
                         </span>
                     </td>
+                    <td class="visible-md visible-lg">
+                        {% set group = item.group %}
+                        {% set groupName = group.name|default('mautic.point.group.form.nogroup'|trans) %}
+                        {{ groupName }}
+                    </td>
                     <td class="visible-md visible-lg">{{ item.delta }}</td>
                     <td>{{ actions[item.type].label|default('')|trans }}</td>
                     <td class="visible-md visible-lg">{{ item.id }}</td>
@@ -93,7 +105,7 @@
         </table>
     </div>
     <div class="panel-footer">
-        {{ include('MauticCoreBundle:Helper:pagination.html.twig', {
+        {{ include('@MauticCore/Helper/pagination.html.twig', {
                 'totalItems': items|length,
                 'page': page,
                 'limit': limit,
